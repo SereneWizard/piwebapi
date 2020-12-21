@@ -52,15 +52,15 @@ namespace TsOpsProj.Controllers
         // PUT: api/tsops/sinusoid
         public IHttpActionResult Put(string id, [FromBody] PIPointModel tagAttrib)
         {
-            bool addvalue = PI.AddPIValue(id, tagAttrib.datetime, 
-                                            tagAttrib.value);
-            if (addvalue)
+            try 
             {
+                PI.AddPIValue(id, tagAttrib.datetime,
+                                            tagAttrib.value);
                 return Content(HttpStatusCode.OK, Get(id));
             }
-            else
+            catch (Exception ex)
             {
-                return Content(HttpStatusCode.BadRequest, "Wrong Input");
+                return Content(HttpStatusCode.BadRequest, ex);
             }
         }
 

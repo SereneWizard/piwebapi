@@ -76,6 +76,8 @@ namespace TsOpsProj.Models
             bool piPointPresent = PIPointExists(piPointName);
             if (!piPointPresent)
             {
+                
+                // Read the remaining attributes if they are supplied
                 Dictionary<string, object> pointAttributes = new Dictionary<string, object>();
 
                 if (piPoint.PointClassName != null) 
@@ -136,8 +138,6 @@ namespace TsOpsProj.Models
                 returnVal.value = piValue.Value.ToString();
             }
             return returnVal;
-
-
         }
 
 
@@ -169,10 +169,10 @@ namespace TsOpsProj.Models
         /// <param name="dateString"></param>
         /// <param name="value"></param>
         /// <returns>True if the write\addition is successful</returns>
-        public bool AddPIValue(string piPoint, string dateString, string value)
+        public void AddPIValue(string piPoint, string dateString, string value)
         {
-            bool piPointPresent = PIPointExists(piPoint);
-            if (piPointPresent)
+            // bool piPointPresent = PIPointExists(piPoint);
+            try
             {
                 PIPoint myPoint = PIPoint.FindPIPoint(_pi, piPoint);
                 PIPointType pointType = myPoint.PointType;
@@ -185,25 +185,33 @@ namespace TsOpsProj.Models
                 }
                 catch (Exception ex)
                 {
-                    return false;
+                    throw new Exception("Data format does not match PIPoint.PointType", ex);
                 }
                 // Parse date
                 DateTime dateValue;
                 AFTime afTime;
-                if (DateTime.TryParse(dateString, out dateValue))
+                try
                 {
+                    dateValue = DateTime.Parse(dateString);
                     afTime = new AFTime(dateValue);
                 }
-                else
+                catch (FormatException ex)
                 {
-                    return false;
+                    throw; 
                 }
 
                 AFValue piValue = new AFValue(val, afTime);
                 myPoint.UpdateValue(piValue, AFUpdateOption.InsertNoCompression);
-                return true;
             }
-            return false;
+            catch (FormatException ex)
+            {
+                throw new Exception("Wrong DateTime format", ex);
+            }
+            catch (PIPointInvalidException ex)
+            {
+                throw new Exception("PI Point does not exist", ex);
+                //return false;
+            }
 
         }
     }
