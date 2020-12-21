@@ -15,6 +15,7 @@ namespace TsOpsProj.Models
 
         public PIServer _pi;
         public List<string> piPointList; 
+
         public PIPointOperations(string piServerName)
         {
             PIServers piServers = new PIServers();
@@ -31,6 +32,10 @@ namespace TsOpsProj.Models
             piPointList = this.GetPIPoints();
         }
 
+        /// <summary>
+        /// Gets all the PI Points in the PI Server
+        /// </summary>
+        /// <returns>A list of PI Point names</returns>
         public List<string> GetPIPoints()
         {
             PIPointList myPointList = new PIPointList(PIPoint.FindPIPoints(_pi, "*"));
@@ -42,9 +47,6 @@ namespace TsOpsProj.Models
             return piPointList;
         }
 
-        /*
-
-        */
         /// <summary>
         /// Checks if a PI Point exists in the PI Server or not
         /// </summary>
@@ -138,6 +140,13 @@ namespace TsOpsProj.Models
 
         }
 
+
+        /// <summary>
+        /// Parses input value based on PI Point Type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="value"></param>
+        /// <returns>Parsed value</returns>
         public object ParseValue(string type, string value)
         {
             switch(type)
@@ -160,6 +169,7 @@ namespace TsOpsProj.Models
                 PIPoint myPoint = PIPoint.FindPIPoint(_pi, piPoint);
                 PIPointType pointType = myPoint.PointType;
 
+                // Parse value
                 object val = 0;
                 try
                 {
@@ -169,7 +179,7 @@ namespace TsOpsProj.Models
                 {
                     return false;
                 }
-
+                // Parse date
                 DateTime dateValue;
                 AFTime afTime;
                 if (DateTime.TryParse(dateString, out dateValue))
