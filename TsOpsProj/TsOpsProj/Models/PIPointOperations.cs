@@ -43,32 +43,13 @@ namespace TsOpsProj.Models
         }
 
         /*
-        public bool CreatePIPoint(string piPointName)
-        {
-            List<string> piPointList = this.GetPIPoints();
-            bool piPointPresent = false;
-            foreach (string point in piPointList)
-            {
-                if (point == piPointName)
-                {
-                    piPointPresent = true;
-                }
-            }
-            if (!piPointPresent)
-            {
-                Dictionary<string, object> pointAttributes = new Dictionary<string, object>();
-                pointAttributes.Add(PICommonPointAttributes.PointClassName, "classic");
-                pointAttributes.Add(PICommonPointAttributes.Descriptor, "Hello World");
-                pointAttributes.Add(PICommonPointAttributes.PointType, "float32");
 
-                _pi.CreatePIPoint(piPointName, pointAttributes);
-                Console.WriteLine("PIPointCreated");
-                return true;
-            }
-            return false;
-        }
         */
-
+        /// <summary>
+        /// Checks if a PI Point exists in the PI Server or not
+        /// </summary>
+        /// <param name="piPointName"></param>
+        /// <returns>boolean</returns>
         public bool PIPointExists(string piPointName)
         {
             foreach (string point in piPointList)
@@ -80,6 +61,7 @@ namespace TsOpsProj.Models
             }
             return false;
         }
+
 
         public bool CreatePIPoint(PIPointModel piPoint)
         {
