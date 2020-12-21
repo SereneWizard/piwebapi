@@ -64,21 +64,15 @@ namespace TsOpsProj.Models
             return false;
         }
 
-
+        /// <summary>
+        /// Create a new PI Point if it doesn't exist
+        /// </summary>
+        /// <param name="piPoint"></param>
+        /// <returns>True if new PI Point is created</returns>
         public bool CreatePIPoint(PIPointModel piPoint)
         {
             string piPointName = piPoint.PointName;
-            /*
-            List<string> piPointList = this.GetPIPoints();
-            bool piPointPresent = false;
-            foreach (string point in piPointList)
-            {
-                if (point == piPointName)
-                {
-                    piPointPresent = true;
-                }
-            }
-            */
+
             bool piPointPresent = PIPointExists(piPointName);
             if (!piPointPresent)
             {
@@ -122,6 +116,12 @@ namespace TsOpsProj.Models
         }
 
 
+        /// <summary>
+        /// Extracts the snapshot value and timestamp of PI Point
+        /// </summary>
+        /// <param name="piPointName"></param>
+        /// <returns>PIValueModel object with snapshot value, 
+        /// timestamp and pointname</returns>
         public PIValueModel GetPIValue(string piPointName)
         {
             PIValueModel returnVal = new PIValueModel();
@@ -161,6 +161,14 @@ namespace TsOpsProj.Models
             }
         }
 
+
+        /// <summary>
+        /// Adds a new value to PI Tag 
+        /// </summary>
+        /// <param name="piPoint"></param>
+        /// <param name="dateString"></param>
+        /// <param name="value"></param>
+        /// <returns>True if the write\addition is successful</returns>
         public bool AddPIValue(string piPoint, string dateString, string value)
         {
             bool piPointPresent = PIPointExists(piPoint);
