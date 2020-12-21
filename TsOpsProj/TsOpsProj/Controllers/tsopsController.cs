@@ -15,7 +15,7 @@ namespace TsOpsProj.Controllers
 
         public tsopsController()
         {
-            PI = new PIPointOperations("vdahal-pii.dev.osisoft.int");
+            PI = new PIPointOperations("<MYPISERVER>");
         }
 
 
